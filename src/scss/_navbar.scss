@@ -1,0 +1,39 @@
+.app-navbar {
+  width: 100%;
+  height: $navbar_height;
+  background: $navbar_bg;
+  padding: 10px;
+
+  nav a {
+    text-decoration: none;
+    transition: all 0.3s;
+    display: inline-block;
+    color: $navbar_color_link;
+    padding: 15px 20px;
+    position: relative;
+
+    &::after {
+      content: '';
+      display: block;
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      background: $navbar_line_color;
+      height: 3px;
+      transform: scaleX(0);
+      width: 100%;
+      border-radius: 10px;
+      transition: all 0.2s cubic-bezier(0.77, 0, 0.175, 1);
+      margin: 0 auto;
+    }
+
+    &:hover::after {
+      transform: scaleX(1);
+    }
+
+    &:hover {
+      color: $navbar_color_link_hover;
+      //  background: $navbar_bg_link_hover;
+    }
+  }
+}

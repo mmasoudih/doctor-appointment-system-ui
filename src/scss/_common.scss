@@ -1,0 +1,15 @@
+.flex{
+  display: flex;
+}
+.space-around{
+  justify-content: space-around;
+}
+.space-between{
+  justify-content: space-between;
+}
+.box{
+  background: white;
+  border-radius: 7px;
+  box-shadow: 0 0 10px 0px #fff;
+  padding: 10px 20px;
+}
