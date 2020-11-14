@@ -1,0 +1,13 @@
+.tabs a{
+  min-width: 250px;
+  padding: 10px 0;
+  display: inline-block;
+  background: lighten($color: $tab_navigation_background, $amount: 15);
+  margin: 5px 0;
+  text-align: center;
+  text-decoration: none;
+}
+.active-tab{
+  background: $tab_navigation_background !important;
+
+}

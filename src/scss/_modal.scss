@@ -9,13 +9,4 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  animation: animate 0.3s cubic-bezier(0.6, -0.28, 0.735, 0.045);
-}
-@keyframes animate{
-  0%{
-  opacity: 0;
-  }
-  100%{
-    opacity: 1;
-  }
 }

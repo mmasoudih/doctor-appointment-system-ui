@@ -1,12 +1,16 @@
 .app-btn {
-  padding: 5px 10px;
-  background: gray;
+  padding: 8px 10px;
+  background: rgba(221, 221, 221, 0.384);
   color: aquamarine;
-  margin: 10px 3px;
+  margin: 8px 3px;
   display: inline-block;
   cursor: pointer;
+  font-weight: 500;
 }
 
 .radius {
   border-radius: 5px;
+}
+.outline{
+  border: 2px solid white;
 }

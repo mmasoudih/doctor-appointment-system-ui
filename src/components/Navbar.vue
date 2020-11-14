@@ -5,32 +5,45 @@
       <router-link to="/" tag="a">همین جوری یه چیزی</router-link>
     </nav>
     <div>
-      <a class="app-btn" @click="show = !show">
+      <a class="app-btn radius " @click="show = !show">
         ورود / عضویت
       </a>
-      <a class="app-btn">
+      <a class="app-btn radius">
         آیا پزشک هستید؟
       </a>
     </div>
-    <login-register-modal :show="show" @fire="fire"/>
+    <transition name="fade">
+      <login-register-modal v-if="show" :show="show" @fire="fire" />
+    </transition>
   </div>
 </template>
+<style>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s;
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>
 <script>
 import LoginRegisterModal from "./SignUpIn";
 
 export default {
   components: {
-    LoginRegisterModal
+    LoginRegisterModal,
   },
   data() {
     return {
-      show: false
-    }
+      show: false,
+    };
   },
-  methods:{
-    fire(){
+  methods: {
+    fire() {
       this.show = false;
-    }
-  }
+    },
+  },
 };
 </script>
