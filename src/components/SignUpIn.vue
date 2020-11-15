@@ -51,54 +51,53 @@
               </form>
             </div>
             <div v-if="activetab == 2" key="2">
-            <div class="error">{{ error }}</div>
               <form @submit.prevent="register">
                 <div class="form-group">
                   <div class="input-row split">
                     <input
                       type="text"
                       placeholder="نام"
-                      v-model="registerData.name"
+                      v-model.trim="registerData.name"
                     />
                     <input
                       type="text"
                       placeholder="نام خانوادگی"
-                      v-model="registerData.family"
+                      v-model.trim="registerData.family"
                     />
                   </div>
                   <div class="input-row">
                     <input
                       type="text"
                       placeholder="شماره موبایل"
-                      v-model="registerData.phone"
+                      v-model.trim="registerData.phone"
+                      maxlength="11"
+                      @keyup="validatePhone"
                     />
                   </div>
                   <div class="input-row">
                     <input
                       type="password"
                       placeholder="گذرواژه"
-                      v-model="registerData.password"
-                      :class="{ invalid: invalid }"
-                      @keyup="confirmPassword"
+                      v-model.trim.lazy="registerData.password"
+                      
                     />
                   </div>
                   <div class="input-row">
                     <input
                       type="password"
                       placeholder="تکرار گذرواژه"
-                      v-model="registerData.password_confirm"
-                      :class="{ invalid: invalid }"
-                      @keyup="confirmPassword"
+                      v-model.trim.lazy="registerData.password_confirm"
+                      
                     />
                   </div>
 
                   <div class="input-row">
                     <Button
-                      :loading="false"
+                      :loading="loading"
                       :block="true"
                       :radius="15"
                       :outline="false"
-                      bg="#1bf01b"
+                      bg="#050401"
                       color="white"
                       >نام نویسی</Button
                     >
@@ -126,7 +125,7 @@
     width: 100%;
     padding: 10px;
     outline: none;
-    border: 1px solid #eee;
+    border: 1px solid #979797;
   }
 }
 .split {
@@ -145,62 +144,143 @@
 .fade-leave-to {
   opacity: 0;
 }
-.invalid {
-  border:1px solid red !important;
-}
 </style>
 <script>
 import Button from "@/components/Button";
+import axios from "../axios";
+import Noty from "noty";
 
 export default {
   components: {
-    Button
+    Button,
   },
   props: {
-    show: Boolean
+    show: Boolean,
   },
   data() {
     return {
       activetab: 1,
       loginData: {
         phone: "",
-        password: ""
+        password: "",
       },
       registerData: {
         name: "",
         family: "",
         phone: "",
         password: "",
-        password_confirm: ""
+        password_confirm: "",
       },
-      invalid: false,
-      error : ''
+      loading: false,
+      phoneInvalid: false,
+      shortPassword: false
     };
   },
   methods: {
     register() {
       if (
-        this.invalid == false &&
         this.registerData.name != "" &&
         this.registerData.family != "" &&
-        this.registerData.phone != ""
+        this.registerData.phone != "" &&
+        this.registerData.password != "" &&
+        this.registerData.password_confirm != "" &&
+        this.shortPassword == false
       ) {
-        //
-      }else{
-        this.error = "لطفا همه فیلد ها را پر کنید."
-        setTimeout(()=>{
-          this.error = ''
-        }, 3000);
+        if (this.phoneInvalid) {
+          this.noty({
+            message: "شماره موبایل اشتباه است",
+            type: "error",
+          });
+        } else {
+          this.loading = true;
+          const formData = {
+            name: this.registerData.name,
+            family: this.registerData.family,
+            phone: this.registerData.phone,
+            password: this.registerData.password,
+          };
+          axios
+            .post("/auth/register", formData)
+            .then((res) => {
+              console.log(res.status);
+              this.loading = false;
+              this.noty({
+                message: res.data.message,
+                type: "success",
+              });
+            })
+            .catch(async (err) => {
+              this.loading = false;
+              let errors = await err.response.data;
+              Object.entries(errors).map((e) => {
+                this.noty({
+                  message: e[1][0],
+                  type: "info",
+                });
+              });
+            });
+        }
+      } else {
+        this.noty({
+          message: "همه فیلد ها را پر کنید",
+          type: "error",
+        });
       }
     },
     login() {},
     confirmPassword: function() {
-      if (this.registerData.password !== this.registerData.password_confirm) {
-        this.invalid = true;
-      } else {
-        this.invalid = false;
+      if (this.registerData.password != this.registerData.password_confirm) {
+        this.noty({
+          message: "گذرواژه و تکرار آن یکسان نیست",
+          type: "warning",
+        });
       }
-    }
-  }
+    },
+    validatePhone() {
+      const pattern = /^09[0|1|2|3|9][0-9]{8}$/;
+      let phone = this.registerData.phone;
+      if (phone.length == 11) {
+        let isValidPhone = pattern.test(phone);
+        if (!isValidPhone) {
+          this.noty({ message: "شماره موبایل اشتباه است", type: "warning" });
+          this.noty({ message: "صفحه کلید را انگلیسی کنید", type: "info" });
+
+          this.phoneInvalid = true;
+        } else {
+          this.phoneInvalid = false;
+        }
+      } else {
+        this.phoneInvalid = true;
+      }
+    },
+    validatePassword() {
+      let password = this.registerData.password;
+      let password_confrim = this.registerData.password_confirm;
+      if (password.length < 8 || password_confrim < 8) {
+        this.noty({ message: "طول گذرواژه کوتاه است", type: "warning" });
+        this.shortPassword = true;
+      }
+    },
+    noty({ message, type }) {
+      new Noty({
+        text: message,
+        timeout: 4000,
+        type: type,
+        layout: "bottomLeft",
+      }).show();
+    },
+  },
+  watch: {
+    registerData: {
+      handler: function(newVal) {
+        if(newVal.password !== newVal.password_confirm && newVal.password != '' && newVal.password_confirm != ''){
+          this.validatePassword();
+          this.confirmPassword();
+        }
+        
+      },
+      deep: true,
+    },
+  },
 };
 </script>
