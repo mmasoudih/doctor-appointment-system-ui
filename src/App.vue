@@ -5,15 +5,15 @@
   </div>
 </template>
 <script>
-import AppNavbar from '@/components/Navbar'
+import AppNavbar from "@/components/Navbar";
 export default {
-  components:{
+  components: {
     AppNavbar
   }
-}
+};
 </script>
 <style lang="scss">
-@import './scss/styles.scss';
+@import "./scss/styles.scss";
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

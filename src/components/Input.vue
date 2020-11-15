@@ -11,7 +11,7 @@
   padding: 5px;
   margin: 2px 0;
 }
-input{
+input {
   width: 100%;
   padding: 10px;
   outline: none;
@@ -19,10 +19,6 @@ input{
 </style>
 <script>
 export default {
-  props: [
-    'type',
-    'placeholder',
-    'value'
-  ]
+  props: ["type", "placeholder", "value"]
 };
 </script>

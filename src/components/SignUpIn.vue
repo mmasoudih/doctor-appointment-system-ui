@@ -19,20 +19,20 @@
         <div class="content">
           <transition name="fade" mode="out-in">
             <div v-if="activetab == 1" key="1">
-              <form @submit.prevent="submit">
+              <form @submit.prevent="login">
                 <div class="form-group">
                   <div class="input-row">
                     <input
                       type="text"
                       placeholder="شماره موبایل"
-                      v-model="phone"
+                      v-model="loginData.phone"
                     />
                   </div>
                   <div class="input-row">
                     <input
                       type="password"
                       placeholder="گذرواژه"
-                      v-model="password"
+                      v-model="loginData.password"
                     />
                   </div>
 
@@ -51,35 +51,44 @@
               </form>
             </div>
             <div v-if="activetab == 2" key="2">
-              <form @submit.prevent="submit">
+            <div class="error">{{ error }}</div>
+              <form @submit.prevent="register">
                 <div class="form-group">
                   <div class="input-row split">
-                    <input type="text" placeholder="نام" v-model="phone" />
+                    <input
+                      type="text"
+                      placeholder="نام"
+                      v-model="registerData.name"
+                    />
                     <input
                       type="text"
                       placeholder="نام خانوادگی"
-                      v-model="phone"
+                      v-model="registerData.family"
                     />
                   </div>
                   <div class="input-row">
                     <input
                       type="text"
                       placeholder="شماره موبایل"
-                      v-model="phone"
+                      v-model="registerData.phone"
                     />
                   </div>
                   <div class="input-row">
                     <input
                       type="password"
                       placeholder="گذرواژه"
-                      v-model="password"
+                      v-model="registerData.password"
+                      :class="{ invalid: invalid }"
+                      @keyup="confirmPassword"
                     />
                   </div>
                   <div class="input-row">
                     <input
                       type="password"
                       placeholder="تکرار گذرواژه"
-                      v-model="password"
+                      v-model="registerData.password_confirm"
+                      :class="{ invalid: invalid }"
+                      @keyup="confirmPassword"
                     />
                   </div>
 
@@ -117,6 +126,7 @@
     width: 100%;
     padding: 10px;
     outline: none;
+    border: 1px solid #eee;
   }
 }
 .split {
@@ -135,27 +145,62 @@
 .fade-leave-to {
   opacity: 0;
 }
+.invalid {
+  border:1px solid red !important;
+}
 </style>
 <script>
 import Button from "@/components/Button";
 
 export default {
   components: {
-    Button,
+    Button
   },
   props: {
-    show: Boolean,
+    show: Boolean
   },
   data() {
     return {
       activetab: 1,
-      phone: "",
-      password: "",
-      showw: true,
+      loginData: {
+        phone: "",
+        password: ""
+      },
+      registerData: {
+        name: "",
+        family: "",
+        phone: "",
+        password: "",
+        password_confirm: ""
+      },
+      invalid: false,
+      error : ''
     };
   },
   methods: {
-    submit() {},
-  },
+    register() {
+      if (
+        this.invalid == false &&
+        this.registerData.name != "" &&
+        this.registerData.family != "" &&
+        this.registerData.phone != ""
+      ) {
+        //
+      }else{
+        this.error = "لطفا همه فیلد ها را پر کنید."
+        setTimeout(()=>{
+          this.error = ''
+        }, 3000);
+      }
+    },
+    login() {},
+    confirmPassword: function() {
+      if (this.registerData.password !== this.registerData.password_confirm) {
+        this.invalid = true;
+      } else {
+        this.invalid = false;
+      }
+    }
+  }
 };
 </script>
