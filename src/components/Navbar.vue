@@ -33,17 +33,17 @@ import LoginRegisterModal from "./SignUpIn";
 
 export default {
   components: {
-    LoginRegisterModal,
+    LoginRegisterModal
   },
   data() {
     return {
-      show: false,
+      show: false
     };
   },
   methods: {
     fire() {
       this.show = false;
-    },
-  },
+    }
+  }
 };
 </script>

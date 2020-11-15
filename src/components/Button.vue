@@ -1,10 +1,17 @@
 <template>
   <div>
-    <button :class="{'outline': outline, 'block': block}" :style="{borderRadius: radius+'px', backgroundColor: bg,color: color}">
-      <div v-if="loading" >
+    <button
+      :class="{ outline: outline, block: block }"
+      :style="{
+        borderRadius: radius + 'px',
+        backgroundColor: bg,
+        color: color
+      }"
+    >
+      <div v-if="loading">
         loading
       </div>
-      <div v-else>      
+      <div v-else>
         <slot></slot>
       </div>
     </button>
@@ -20,26 +27,26 @@ button {
   border: transparent;
   outline: none;
 }
-.block{
+.block {
   width: 100%;
   display: block;
 }
 .radius {
   border-radius: 5px;
 }
-.outline{
+.outline {
   border: 2px solid red;
 }
 </style>
 <script>
 export default {
-  props:{
+  props: {
     loading: Boolean,
     block: Boolean,
     radius: Number,
     outline: Boolean,
     bg: String,
-    color: String 
+    color: String
   }
-}
+};
 </script>
