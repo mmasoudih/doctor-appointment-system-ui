@@ -5,7 +5,7 @@
       :style="{
         borderRadius: radius + 'px',
         backgroundColor: bg,
-        color: color,
+        color: color
       }"
       :disabled="loading"
     >
@@ -81,7 +81,7 @@ export default {
     radius: Number,
     outline: Boolean,
     bg: String,
-    color: String,
-  },
+    color: String
+  }
 };
 </script>

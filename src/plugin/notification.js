@@ -2,7 +2,6 @@
 // import VueNotifications from 'vue-notifications'
 // import Noty from 'noty'
 
-
 // function toast ({ message, type, timeout}) {
 //   if (type === VueNotifications.types.warn) type = 'warning'
 //   return new Noty({text: message, timeout, type, layout: 'bottomLeft'}).show()

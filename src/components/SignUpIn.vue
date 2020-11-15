@@ -3,6 +3,7 @@
     <div class="box">
       <div id="tabs">
         <div class="tabs">
+          {{ loginLoading }}
           <a
             href="#"
             @click="activetab = 1"
@@ -38,7 +39,7 @@
 
                   <div class="input-row">
                     <Button
-                      :loading="false"
+                      :loading="loginLoading"
                       :block="true"
                       :radius="15"
                       :outline="false"
@@ -79,7 +80,6 @@
                       type="password"
                       placeholder="گذرواژه"
                       v-model.trim.lazy="registerData.password"
-                      
                     />
                   </div>
                   <div class="input-row">
@@ -87,7 +87,6 @@
                       type="password"
                       placeholder="تکرار گذرواژه"
                       v-model.trim.lazy="registerData.password_confirm"
-                      
                     />
                   </div>
 
@@ -152,24 +151,24 @@ import Noty from "noty";
 
 export default {
   components: {
-    Button,
+    Button
   },
   props: {
-    show: Boolean,
+    show: Boolean
   },
   data() {
     return {
       activetab: 1,
       loginData: {
         phone: "",
-        password: "",
+        password: ""
       },
       registerData: {
         name: "",
         family: "",
         phone: "",
         password: "",
-        password_confirm: "",
+        password_confirm: ""
       },
       loading: false,
       phoneInvalid: false,
@@ -189,7 +188,7 @@ export default {
         if (this.phoneInvalid) {
           this.noty({
             message: "شماره موبایل اشتباه است",
-            type: "error",
+            type: "error"
           });
         } else {
           this.loading = true;
@@ -197,25 +196,25 @@ export default {
             name: this.registerData.name,
             family: this.registerData.family,
             phone: this.registerData.phone,
-            password: this.registerData.password,
+            password: this.registerData.password
           };
           axios
             .post("/auth/register", formData)
-            .then((res) => {
+            .then(res => {
               console.log(res.status);
               this.loading = false;
               this.noty({
                 message: res.data.message,
-                type: "success",
+                type: "success"
               });
             })
-            .catch(async (err) => {
+            .catch(async err => {
               this.loading = false;
               let errors = await err.response.data;
-              Object.entries(errors).map((e) => {
+              Object.entries(errors).map(e => {
                 this.noty({
                   message: e[1][0],
-                  type: "info",
+                  type: "info"
                 });
               });
             });
@@ -223,16 +222,19 @@ export default {
       } else {
         this.noty({
           message: "همه فیلد ها را پر کنید",
-          type: "error",
+          type: "error"
         });
       }
     },
-    login() {},
+    login() {
+      this.$store.commit("activeLoading");
+      this.$store.dispatch("login", this.loginData);
+    },
     confirmPassword: function() {
       if (this.registerData.password != this.registerData.password_confirm) {
         this.noty({
           message: "گذرواژه و تکرار آن یکسان نیست",
-          type: "warning",
+          type: "warning"
         });
       }
     },
@@ -266,21 +268,29 @@ export default {
         text: message,
         timeout: 4000,
         type: type,
-        layout: "bottomLeft",
+        layout: "bottomLeft"
       }).show();
-    },
+    }
+  },
+  computed: {
+    loginLoading() {
+      return this.$store.getters.loading;
+    }
   },
   watch: {
     registerData: {
       handler: function(newVal) {
-        if(newVal.password !== newVal.password_confirm && newVal.password != '' && newVal.password_confirm != ''){
+        if (
+          newVal.password !== newVal.password_confirm &&
+          newVal.password != "" &&
+          newVal.password_confirm != ""
+        ) {
           this.validatePassword();
           this.confirmPassword();
         }
-        
       },
-      deep: true,
-    },
-  },
+      deep: true
+    }
+  }
 };
 </script>
