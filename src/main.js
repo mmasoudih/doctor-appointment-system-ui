@@ -1,4 +1,7 @@
+import "@babel/polyfill";
+import "mutationobserver-shim";
 import Vue from "vue";
+import "./plugins/bootstrap-vue";
 import "./plugin/notification";
 import App from "./App.vue";
 import "./registerServiceWorker";
