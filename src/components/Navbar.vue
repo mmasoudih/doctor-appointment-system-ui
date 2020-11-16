@@ -1,21 +1,21 @@
 <template>
-  <div class="app-navbar flex space-between">
-    <nav>
-      <router-link to="/" tag="a">صفحه اصلی</router-link>
-      <router-link to="/" tag="a">همین جوری یه چیزی</router-link>
-    </nav>
-    <div>
-      <a class="app-btn radius " @click="show = !show">
-        ورود / عضویت
-      </a>
-      <a class="app-btn radius">
-        آیا پزشک هستید؟
-      </a>
-    </div>
-    <transition name="fade">
-      <login-register-modal v-if="show" :show="show" @fire="fire" />
-    </transition>
-  </div>
+  <b-navbar toggleable="lg" type="dark" variant="dark">
+    <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+    <b-collapse id="nav-collapse" is-nav>
+      <b-navbar-nav>
+        <router-link to="/" tag="b-nav-item">صفحه اصلی</router-link>
+        <router-link to="/" tag="b-nav-item">همین جوری یه چیزی</router-link>
+      </b-navbar-nav>
+
+      <!-- left aligned nav items -->
+      <b-navbar-nav class="mr-auto">
+        <b-button squared  v-b-modal.modal-lg variant="outline-warning ml-2" @click="show = !show">ورود / نام نویسی</b-button>
+        <b-button squared variant="outline-success">آیا پزشک هستید؟</b-button>
+      
+          <login-register-modal />
+      </b-navbar-nav>
+    </b-collapse>
+  </b-navbar>
 </template>
 <style>
 .fade-enter-active,
@@ -33,17 +33,17 @@ import LoginRegisterModal from "./SignUpIn";
 
 export default {
   components: {
-    LoginRegisterModal
+    LoginRegisterModal,
   },
   data() {
     return {
-      show: false
+      show: false,
     };
   },
   methods: {
     fire() {
       this.show = false;
-    }
-  }
+    },
+  },
 };
 </script>
