@@ -4,14 +4,19 @@
     <b-collapse id="nav-collapse" is-nav>
       <b-navbar-nav>
         <router-link to="/" tag="b-nav-item">صفحه اصلی</router-link>
-        <router-link to="/" tag="b-nav-item">همین جوری یه چیزی</router-link>
+        <router-link to="/panel" tag="b-nav-item">ورود به پنل</router-link>
       </b-navbar-nav>
 
       <!-- left aligned nav items -->
       <b-navbar-nav class="mr-auto">
-        <b-button squared  v-b-modal.modal-lg variant="outline-warning ml-2" @click="show = !show">ورود / نام نویسی</b-button>
-        <b-button squared variant="outline-success">آیا پزشک هستید؟</b-button>
-      
+        
+          <div v-if="!authenticated">
+            <b-button squared  v-b-modal.modal-lg variant="outline-success ml-2">ورود / نام نویسی</b-button>
+          </div>
+          <div v-if="authenticated">
+            <b-button squared variant="outline-info ml-2" :to="{name: 'completeProfile'}">تکمیل پروفایل</b-button>
+            <b-button squared variant="outline-danger ml-2 " @click="logout">خروج از حساب</b-button>
+          </div>
           <login-register-modal />
       </b-navbar-nav>
     </b-collapse>
@@ -35,15 +40,15 @@ export default {
   components: {
     LoginRegisterModal,
   },
-  data() {
-    return {
-      show: false,
-    };
+  methods:{
+    logout(){
+      this.$store.dispatch('logout');
+    }
   },
-  methods: {
-    fire() {
-      this.show = false;
-    },
-  },
+  computed:{
+    authenticated(){
+      return this.$store.getters.authenticated
+    }
+  }
 };
 </script>

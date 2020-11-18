@@ -2,7 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import axios from "../axios";
 import Noty from  "../plugins/notification";
-
+import router from "../router/index";
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -10,12 +10,14 @@ export default new Vuex.Store({
     token: null,
     user: null,
     loading: false,
+    authenticated: false
   },
   mutations: {
     authUser(state, userData) {
       state.token = userData.token;
       state.user = userData.user;
       localStorage.setItem("token", JSON.stringify(userData.token));
+      state.authenticated = true
     },
     activeLoading(state) {
       state.loading = true;
@@ -23,10 +25,25 @@ export default new Vuex.Store({
     disableLoading(state) {
       state.loading = false;
     },
+    setUserLogin(state){
+      state.authenticated = true;
+    },
+    logout(state){
+      state.authenticated = false;
+      localStorage.removeItem("token");
+      router.push("/");
+      Noty({
+        message: "خروج از حساب کاربری با موفقیت انجام شد.",
+        type: "info",
+      });
+    },
+    setToken(state){
+      state.token = localStorage.token;
+    }
   },
   actions: {
     login({ commit }, userData) {
-      axios
+        axios
         .post("/auth/login", {
           phone: userData.phone,
           password: userData.password,
@@ -42,7 +59,8 @@ export default new Vuex.Store({
             message: "ورود با موفقیت انجام شد.",
             type: "success",
           })
-          : ''
+          : '';
+          router.push('/panel');
         })
         .then( async () => {
           commit("disableLoading");
@@ -59,11 +77,20 @@ export default new Vuex.Store({
           commit("disableLoading");
         });
     },
+    logout({ commit }){
+      commit('logout')
+    }
   },
   getters: {
     loading(state) {
       return state.loading;
     },
+    authenticated(state){
+      return state.authenticated;
+    },
+    userInfo(state){
+      return state.user;
+    }
   },
   modules: {},
 });

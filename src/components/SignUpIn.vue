@@ -4,12 +4,22 @@
       <b-container>
         <b-row>
           <b-col class="p-0"
-            ><b-button squared block variant="primary" :class="{'active-class': activetab ==1}" @click="activetab = 1"
+            ><b-button
+              squared
+              block
+              variant="primary"
+              :class="{ 'active-class': activetab == 1 }"
+              @click="activetab = 1"
               >ورود</b-button
             ></b-col
           >
           <b-col class="p-0"
-            ><b-button squared block variant="secondary" :class="{'active-class': activetab ==2}" @click="activetab = 2"
+            ><b-button
+              squared
+              block
+              variant="secondary"
+              :class="{ 'active-class': activetab == 2 }"
+              @click="activetab = 2"
               >نام نویسی</b-button
             ></b-col
           >
@@ -106,7 +116,10 @@
               ></b-form-input>
 
               <!-- This will only be shown if the preceding input has an invalid state -->
-              <b-form-invalid-feedback id="phone-live-feedback" v-if="!$v.registerData.phone.required">
+              <b-form-invalid-feedback
+                id="phone-live-feedback"
+                v-if="!$v.registerData.phone.required"
+              >
                 شماره موبایل نمیتواند خالی باشد.
               </b-form-invalid-feedback>
 
@@ -155,9 +168,8 @@
               </b-form-invalid-feedback>
             </b-form-group>
 
-            
             <b-checkbox v-model="isDoctor">آیا پزشک هستید؟</b-checkbox>
-            
+
             <b-button
               block
               squared
@@ -177,7 +189,7 @@
   </div>
 </template>
 <style lang="scss" scoped>
-.active-class{
+.active-class {
   opacity: 0.7;
 }
 
@@ -218,7 +230,7 @@ export default {
       phoneInvalid: false,
       shortPassword: false,
       userRegisterUrl: "/auth/register",
-      doctorRegisterUrl: "/doctor/register",
+      doctorRegisterUrl: "/auth/doctorO/register",
       isDoctor: false,
     };
   },
@@ -233,11 +245,14 @@ export default {
       const formData = {
         name: this.registerData.name,
         family: this.registerData.family,
-        phone: this.registerData.phone,
-        password: this.registerData.password,
+        phone: this.toEnglishDigits(this.registerData.phone),
+        password: this.toEnglishDigits(this.registerData.password),
       };
       axios
-        .post(this.isDoctor ? this.doctorRegisterUrl : this.userRegisterUrl , formData)
+        .post(
+          this.isDoctor ? this.doctorRegisterUrl : this.userRegisterUrl,
+          formData
+        )
         .then((res) => {
           this.loading = false;
           Noty({
@@ -248,7 +263,7 @@ export default {
         .catch(async (err) => {
           this.loading = false;
           let errors;
-          if(err.response){
+          if (err.response) {
             errors = await err.response.data;
             Object.entries(errors).map((e) => {
               Noty({
@@ -256,26 +271,50 @@ export default {
                 type: "info",
               });
             });
-          }          
+          }
         });
     },
     login() {
-       this.$v.loginData.$touch();
+      this.$v.loginData.$touch();
       // if its still pending or an error is returned do not submit
       if (this.$v.loginData.$pending || this.$v.loginData.$error) return;
       // to form submit after this
-
+      let loginData = {
+        phone: this.toEnglishDigits(this.loginData.phone),
+        password: this.toEnglishDigits(this.loginData.password)
+      }
       this.$store.commit("activeLoading");
-      this.$store.dispatch("login", this.loginData);
+      this.$store.dispatch("login", loginData);
+
+      // console.log(test);
+    },
+    toEnglishDigits(str) {
+      // convert persian digits [۰۱۲۳۴۵۶۷۸۹]
+      var e = "۰".charCodeAt(0);
+      str = str.replace(/[۰-۹]/g, function(t) {
+        return t.charCodeAt(0) - e;
+      });
+      return str;
     },
   },
   computed: {
     loginLoading() {
       return this.$store.getters.loading;
     },
+    authenticated() {
+      return this.$store.getters.authenticated;
+    },
+  },
+  watch: {
+    authenticated(val) {
+      if (val) {
+        this.$bvModal.hide("modal-lg");
+      }
+      console.log(val);
+    },
   },
   validations: {
-    loginData:{
+    loginData: {
       phone: { required },
       password: { required },
     },
