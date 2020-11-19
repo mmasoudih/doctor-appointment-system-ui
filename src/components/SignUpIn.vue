@@ -26,7 +26,8 @@
         </b-row>
         <transition name="fade" mode="out-in">
           <div role="group" v-if="activetab == 1" :key="1">
-            <b-form-group>
+            <b-form @submit.prevent="login">
+              <b-form-group>
               <b-form-input
                 v-model="loginData.phone"
                 :state="!$v.loginData.phone.$error ? null : false"
@@ -64,7 +65,7 @@
               block
               squared
               variant="outline-primary"
-              @click="login"
+              type="submit"
               :disabled="loginLoading"
             >
               <span v-if="!loginLoading"> ورود</span>
@@ -72,10 +73,12 @@
                 <b-spinner></b-spinner>
               </div>
             </b-button>
+            </b-form>
           </div>
 
           <div role="group" v-if="activetab == 2" :key="2">
-            <b-form-group>
+            <b-form @submit.prevent="register">
+              <b-form-group>
               <b-form-input
                 v-model="registerData.name"
                 :state="!$v.registerData.name.$error ? null : false"
@@ -174,7 +177,7 @@
               block
               squared
               variant="outline-success"
-              @click="register"
+              type="submit"
               :disabled="loading"
             >
               <span v-if="!loading"> نام نویسی</span>
@@ -182,6 +185,7 @@
                 <b-spinner></b-spinner>
               </div>
             </b-button>
+            </b-form>
           </div>
         </transition>
       </b-container>

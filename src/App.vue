@@ -19,9 +19,6 @@ export default {
       if (jwtPayload.exp < Date.now() / 1000) {
         // token expired
         localStorage.removeItem("token");
-      }else{
-        this.$store.commit('setUserLogin');
-        this.$store.commit('setToken');
       }
     }
   }

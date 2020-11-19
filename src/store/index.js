@@ -10,13 +10,14 @@ export default new Vuex.Store({
     token: null,
     user: null,
     loading: false,
-    authenticated: false
+    authenticated: false,
+    specialties: []
   },
   mutations: {
     authUser(state, userData) {
       state.token = userData.token;
       state.user = userData.user;
-      localStorage.setItem("token", JSON.stringify(userData.token));
+      localStorage.setItem("token", userData.token);
       state.authenticated = true
     },
     activeLoading(state) {
@@ -25,8 +26,10 @@ export default new Vuex.Store({
     disableLoading(state) {
       state.loading = false;
     },
-    setUserLogin(state){
-      state.authenticated = true;
+    setUserLogin(state, userData){
+      state.authenticated = localStorage.token ? true : false;
+      state.token = localStorage.token ? localStorage.token : null;
+      state.user = userData
     },
     logout(state){
       state.authenticated = false;
@@ -37,11 +40,13 @@ export default new Vuex.Store({
         type: "info",
       });
     },
-    setToken(state){
-      state.token = localStorage.token;
-    }
+    setHeader(state){  
+      axios.defaults.headers.common['Authorization'] = `Bearer ${state.token}`
+    },
+
   },
   actions: {
+    
     login({ commit }, userData) {
         axios
         .post("/auth/login", {
@@ -54,6 +59,7 @@ export default new Vuex.Store({
             token: res.data.access_token,
             user: res.data.user,
           });
+          commit("setHeader");
           res.data.access_token ?
           Noty({
             message: "ورود با موفقیت انجام شد.",
@@ -79,6 +85,24 @@ export default new Vuex.Store({
     },
     logout({ commit }){
       commit('logout')
+    },
+    setUserLogin({ commit }){
+      axios
+      .get("/getUser")
+      .then(async (res) => {
+        let response = await res.data;
+        commit("setUserLogin", response);
+      })
+      .catch(async (err) => {
+        this.loading = false;
+        let errors = await err.response.data;
+        Object.entries(errors).map((e) => {
+          Noty({
+            message: e[1],
+            type: "error",
+          });
+        });
+      });
     }
   },
   getters: {
@@ -90,6 +114,9 @@ export default new Vuex.Store({
     },
     userInfo(state){
       return state.user;
+    },
+    token(state){
+      return state.token
     }
   },
   modules: {},
