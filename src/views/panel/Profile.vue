@@ -37,11 +37,7 @@
           ></b-form-input>
         </b-form-group>
 
-        <b-form-group
-          id="input-group-2"
-          label="سن :‌"
-          label-for="input-2"
-        >
+        <b-form-group id="input-group-2" label="سن :‌" label-for="input-2">
           <b-form-input
             id="input-2"
             v-model="form.name"
@@ -63,11 +59,9 @@
             v-model="form.name"
             required
             placeholder="معرفی کوتاه"
-            >
-
+          >
           </b-textarea>
         </b-form-group>
-
 
         <b-button type="submit" variant="primary" block>بروزرسانی</b-button>
       </b-form>
@@ -82,16 +76,16 @@ export default {
         email: "",
         name: "",
         food: null,
-        checked: [],
+        checked: []
       },
       foods: [
         { text: "Select One", value: null },
         "Carrots",
         "Beans",
         "Tomatoes",
-        "Corn",
+        "Corn"
       ],
-      show: true,
+      show: true
     };
   },
   methods: {
@@ -111,12 +105,12 @@ export default {
       this.$nextTick(() => {
         this.show = true;
       });
-    },
+    }
   },
   computed: {
     profileData() {
       return this.$store.getters.userInfo;
-    },
-  },
+    }
+  }
 };
 </script>

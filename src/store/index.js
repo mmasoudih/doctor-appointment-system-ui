@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import axios from "../axios";
-import Noty from  "../plugins/notification";
+import Noty from "../plugins/notification";
 import router from "../router/index";
 Vue.use(Vuex);
 
@@ -18,7 +18,7 @@ export default new Vuex.Store({
       state.token = userData.token;
       state.user = userData.user;
       localStorage.setItem("token", userData.token);
-      state.authenticated = true
+      state.authenticated = true;
     },
     activeLoading(state) {
       state.loading = true;
@@ -26,98 +26,95 @@ export default new Vuex.Store({
     disableLoading(state) {
       state.loading = false;
     },
-    setUserLogin(state, userData){
+    setUserLogin(state, userData) {
       state.authenticated = localStorage.token ? true : false;
       state.token = localStorage.token ? localStorage.token : null;
-      state.user = userData
+      state.user = userData;
     },
-    logout(state){
+    logout(state) {
       state.authenticated = false;
       localStorage.removeItem("token");
       router.push("/");
       Noty({
         message: "خروج از حساب کاربری با موفقیت انجام شد.",
-        type: "info",
+        type: "info"
       });
     },
-    setHeader(state){  
-      axios.defaults.headers.common['Authorization'] = `Bearer ${state.token}`
-    },
-
+    setHeader(state) {
+      axios.defaults.headers.common["Authorization"] = `Bearer ${state.token}`;
+    }
   },
   actions: {
-    
     login({ commit }, userData) {
-        axios
+      axios
         .post("/auth/login", {
           phone: userData.phone,
-          password: userData.password,
+          password: userData.password
         })
-        .then((res) => {
-        
+        .then(res => {
           commit("authUser", {
             token: res.data.access_token,
-            user: res.data.user,
+            user: res.data.user
           });
           commit("setHeader");
-          res.data.access_token ?
-          Noty({
-            message: "ورود با موفقیت انجام شد.",
-            type: "success",
-          })
-          : '';
-          router.push('/panel');
+          res.data.access_token
+            ? Noty({
+                message: "ورود با موفقیت انجام شد.",
+                type: "success"
+              })
+            : "";
+          router.push("/panel");
         })
-        .then( async () => {
+        .then(async () => {
           commit("disableLoading");
         })
-        .catch(async (err) => {
+        .catch(async err => {
           this.loading = false;
           let errors = await err.response.data;
-          Object.entries(errors).map((e) => {
+          Object.entries(errors).map(e => {
             Noty({
               message: e[1],
-              type: "error",
+              type: "error"
             });
           });
           commit("disableLoading");
         });
     },
-    logout({ commit }){
-      commit('logout')
+    logout({ commit }) {
+      commit("logout");
     },
-    setUserLogin({ commit }){
+    setUserLogin({ commit }) {
       axios
-      .get("/getUser")
-      .then(async (res) => {
-        let response = await res.data;
-        commit("setUserLogin", response);
-      })
-      .catch(async (err) => {
-        this.loading = false;
-        let errors = await err.response.data;
-        Object.entries(errors).map((e) => {
-          Noty({
-            message: e[1],
-            type: "error",
+        .get("/getUser")
+        .then(async res => {
+          let response = await res.data;
+          commit("setUserLogin", response);
+        })
+        .catch(async err => {
+          this.loading = false;
+          let errors = await err.response.data;
+          Object.entries(errors).map(e => {
+            Noty({
+              message: e[1],
+              type: "error"
+            });
           });
         });
-      });
     }
   },
   getters: {
     loading(state) {
       return state.loading;
     },
-    authenticated(state){
+    authenticated(state) {
       return state.authenticated;
     },
-    userInfo(state){
+    userInfo(state) {
       return state.user;
     },
-    token(state){
-      return state.token
+    token(state) {
+      return state.token;
     }
   },
-  modules: {},
+  modules: {}
 });

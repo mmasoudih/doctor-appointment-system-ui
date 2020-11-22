@@ -1,13 +1,12 @@
+import Noty from "noty";
 
-import Noty from 'noty'
-
- function noty({ message, type }) {
-      return new Noty({
-        text: message,
-        timeout: 4000,
-        type: type,
-        layout: "bottomLeft",
-      }).show();
+function noty({ message, type }) {
+  return new Noty({
+    text: message,
+    timeout: 4000,
+    type: type,
+    layout: "bottomLeft"
+  }).show();
 }
 // function toast ({ message, type, timeout}) {
 //   if (type === VueNotifications.types.warn) type = 'warning'
@@ -22,5 +21,4 @@ import Noty from 'noty'
 // }
 
 // Vue.use(VueNotifications, options)
-export default noty
-
+export default noty;

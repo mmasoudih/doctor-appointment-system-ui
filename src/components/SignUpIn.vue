@@ -28,163 +28,165 @@
           <div role="group" v-if="activetab == 1" :key="1">
             <b-form @submit.prevent="login">
               <b-form-group>
-              <b-form-input
-                v-model="loginData.phone"
-                :state="!$v.loginData.phone.$error ? null : false"
-                aria-describedby="phone-live-feedback"
-                placeholder="شماره موبایل"
-                class="rounded-0 mt-3 mb-2"
-                trim
-              ></b-form-input>
+                <b-form-input
+                  v-model="loginData.phone"
+                  :state="!$v.loginData.phone.$error ? null : false"
+                  aria-describedby="phone-live-feedback"
+                  placeholder="شماره موبایل"
+                  class="rounded-0 mt-3 mb-2"
+                  trim
+                ></b-form-input>
 
-              <!-- This will only be shown if the preceding input has an invalid state -->
-              <b-form-invalid-feedback id="phone-live-feedback">
-                شماره موبایل نمیتواند خالی باشد.
-              </b-form-invalid-feedback>
+                <!-- This will only be shown if the preceding input has an invalid state -->
+                <b-form-invalid-feedback id="phone-live-feedback">
+                  شماره موبایل نمیتواند خالی باشد.
+                </b-form-invalid-feedback>
 
-              <b-form-input
-                v-model="loginData.password"
-                :state="!$v.loginData.password.$error ? null : false"
-                aria-describedby="password-live-feedback password-min-live-feedback"
-                placeholder="گذرواژه"
-                class="rounded-0 mt-2 mb-2"
-                trim
-                type="password"
-              ></b-form-input>
+                <b-form-input
+                  v-model="loginData.password"
+                  :state="!$v.loginData.password.$error ? null : false"
+                  aria-describedby="password-live-feedback password-min-live-feedback"
+                  placeholder="گذرواژه"
+                  class="rounded-0 mt-2 mb-2"
+                  trim
+                  type="password"
+                ></b-form-input>
 
-              <!-- This will only be shown if the preceding input has an invalid state -->
-              <b-form-invalid-feedback
-                id="password-live-feedback"
-                v-if="!$v.loginData.password.required"
+                <!-- This will only be shown if the preceding input has an invalid state -->
+                <b-form-invalid-feedback
+                  id="password-live-feedback"
+                  v-if="!$v.loginData.password.required"
+                >
+                  گذرواژه نمیتواند خالی باشد.
+                </b-form-invalid-feedback>
+              </b-form-group>
+
+              <b-button
+                block
+                squared
+                variant="outline-primary"
+                type="submit"
+                :disabled="loginLoading"
               >
-                گذرواژه نمیتواند خالی باشد.
-              </b-form-invalid-feedback>
-            </b-form-group>
-
-            <b-button
-              block
-              squared
-              variant="outline-primary"
-              type="submit"
-              :disabled="loginLoading"
-            >
-              <span v-if="!loginLoading"> ورود</span>
-              <div v-if="loginLoading" class="d-flex justify-content-center">
-                <b-spinner></b-spinner>
-              </div>
-            </b-button>
+                <span v-if="!loginLoading"> ورود</span>
+                <div v-if="loginLoading" class="d-flex justify-content-center">
+                  <b-spinner></b-spinner>
+                </div>
+              </b-button>
             </b-form>
           </div>
 
           <div role="group" v-if="activetab == 2" :key="2">
             <b-form @submit.prevent="register">
               <b-form-group>
-              <b-form-input
-                v-model="registerData.name"
-                :state="!$v.registerData.name.$error ? null : false"
-                aria-describedby="name-live-feedback"
-                placeholder="نام"
-                class="ml-1 mt-2 mb-2 rounded-0"
-                trim
-              ></b-form-input>
-              <b-form-invalid-feedback
-                id="name-live-feedback"
-                v-if="!$v.registerData.name.required"
+                <b-form-input
+                  v-model="registerData.name"
+                  :state="!$v.registerData.name.$error ? null : false"
+                  aria-describedby="name-live-feedback"
+                  placeholder="نام"
+                  class="ml-1 mt-2 mb-2 rounded-0"
+                  trim
+                ></b-form-input>
+                <b-form-invalid-feedback
+                  id="name-live-feedback"
+                  v-if="!$v.registerData.name.required"
+                >
+                  نام نمیتواند خالی باشد.
+                </b-form-invalid-feedback>
+
+                <b-form-input
+                  v-model="registerData.family"
+                  :state="!$v.registerData.family.$error ? null : false"
+                  aria-describedby="family-live-feedback"
+                  placeholder="نام خانوادگی"
+                  class="rounded-0 mt-2 mb-2"
+                  trim
+                ></b-form-input>
+                <b-form-invalid-feedback
+                  id="family-live-feedback"
+                  v-if="!$v.registerData.family.required"
+                >
+                  نام خانوادگی نمیتواند خالی باشد.
+                </b-form-invalid-feedback>
+
+                <b-form-input
+                  v-model="registerData.phone"
+                  :state="!$v.registerData.phone.$error ? null : false"
+                  aria-describedby="phone-live-feedback"
+                  placeholder="شماره موبایل"
+                  class="rounded-0 mb-2"
+                  trim
+                ></b-form-input>
+
+                <!-- This will only be shown if the preceding input has an invalid state -->
+                <b-form-invalid-feedback
+                  id="phone-live-feedback"
+                  v-if="!$v.registerData.phone.required"
+                >
+                  شماره موبایل نمیتواند خالی باشد.
+                </b-form-invalid-feedback>
+
+                <b-form-input
+                  v-model="registerData.password"
+                  :state="$v.registerData.password.$error ? false : null"
+                  aria-describedby="password-live-feedback password-min-live-feedback"
+                  placeholder="گذرواژه"
+                  class="rounded-0 mt-2 mb-2"
+                  trim
+                  type="password"
+                ></b-form-input>
+
+                <!-- This will only be shown if the preceding input has an invalid state -->
+                <b-form-invalid-feedback
+                  id="password-live-feedback"
+                  v-if="!$v.registerData.password.required"
+                >
+                  گذرواژه نمیتواند خالی باشد.
+                </b-form-invalid-feedback>
+                <b-form-invalid-feedback
+                  id="password-min-live-feedback"
+                  v-if="!$v.registerData.password.minLength"
+                >
+                  گذروازه باید حداقل
+                  {{ $v.registerData.password.$params.minLength.min }}
+                  کاراکتر باشد..
+                </b-form-invalid-feedback>
+
+                <b-form-input
+                  v-model="registerData.password_confirm"
+                  :state="
+                    $v.registerData.password_confirm.$error ? false : null
+                  "
+                  aria-describedby="password-confirm-live-feedback"
+                  placeholder="تکرار گذرواژه"
+                  class="rounded-0 mt-2"
+                  trim
+                  type="password"
+                ></b-form-input>
+
+                <!-- This will only be shown if the preceding input has an invalid state -->
+                <b-form-invalid-feedback
+                  id="password-confirm-live-feedback"
+                  v-if="!$v.registerData.password_confirm.password_confirm"
+                >
+                  تکرار گذرواژه یکسان نیست.
+                </b-form-invalid-feedback>
+              </b-form-group>
+
+              <b-checkbox v-model="isDoctor">آیا پزشک هستید؟</b-checkbox>
+
+              <b-button
+                block
+                squared
+                variant="outline-success"
+                type="submit"
+                :disabled="loading"
               >
-                نام نمیتواند خالی باشد.
-              </b-form-invalid-feedback>
-
-              <b-form-input
-                v-model="registerData.family"
-                :state="!$v.registerData.family.$error ? null : false"
-                aria-describedby="family-live-feedback"
-                placeholder="نام خانوادگی"
-                class="rounded-0 mt-2 mb-2"
-                trim
-              ></b-form-input>
-              <b-form-invalid-feedback
-                id="family-live-feedback"
-                v-if="!$v.registerData.family.required"
-              >
-                نام خانوادگی نمیتواند خالی باشد.
-              </b-form-invalid-feedback>
-
-              <b-form-input
-                v-model="registerData.phone"
-                :state="!$v.registerData.phone.$error ? null : false"
-                aria-describedby="phone-live-feedback"
-                placeholder="شماره موبایل"
-                class="rounded-0 mb-2"
-                trim
-              ></b-form-input>
-
-              <!-- This will only be shown if the preceding input has an invalid state -->
-              <b-form-invalid-feedback
-                id="phone-live-feedback"
-                v-if="!$v.registerData.phone.required"
-              >
-                شماره موبایل نمیتواند خالی باشد.
-              </b-form-invalid-feedback>
-
-              <b-form-input
-                v-model="registerData.password"
-                :state="$v.registerData.password.$error ? false : null"
-                aria-describedby="password-live-feedback password-min-live-feedback"
-                placeholder="گذرواژه"
-                class="rounded-0 mt-2 mb-2"
-                trim
-                type="password"
-              ></b-form-input>
-
-              <!-- This will only be shown if the preceding input has an invalid state -->
-              <b-form-invalid-feedback
-                id="password-live-feedback"
-                v-if="!$v.registerData.password.required"
-              >
-                گذرواژه نمیتواند خالی باشد.
-              </b-form-invalid-feedback>
-              <b-form-invalid-feedback
-                id="password-min-live-feedback"
-                v-if="!$v.registerData.password.minLength"
-              >
-                گذروازه باید حداقل
-                {{ $v.registerData.password.$params.minLength.min }}
-                کاراکتر باشد..
-              </b-form-invalid-feedback>
-
-              <b-form-input
-                v-model="registerData.password_confirm"
-                :state="$v.registerData.password_confirm.$error ? false : null"
-                aria-describedby="password-confirm-live-feedback"
-                placeholder="تکرار گذرواژه"
-                class="rounded-0 mt-2"
-                trim
-                type="password"
-              ></b-form-input>
-
-              <!-- This will only be shown if the preceding input has an invalid state -->
-              <b-form-invalid-feedback
-                id="password-confirm-live-feedback"
-                v-if="!$v.registerData.password_confirm.password_confirm"
-              >
-                تکرار گذرواژه یکسان نیست.
-              </b-form-invalid-feedback>
-            </b-form-group>
-
-            <b-checkbox v-model="isDoctor">آیا پزشک هستید؟</b-checkbox>
-
-            <b-button
-              block
-              squared
-              variant="outline-success"
-              type="submit"
-              :disabled="loading"
-            >
-              <span v-if="!loading"> نام نویسی</span>
-              <div v-if="loading" class="d-flex justify-content-center">
-                <b-spinner></b-spinner>
-              </div>
-            </b-button>
+                <span v-if="!loading"> نام نویسی</span>
+                <div v-if="loading" class="d-flex justify-content-center">
+                  <b-spinner></b-spinner>
+                </div>
+              </b-button>
             </b-form>
           </div>
         </transition>
@@ -214,28 +216,28 @@ import Noty from "../plugins/notification";
 import { required, sameAs, minLength } from "vuelidate/lib/validators";
 export default {
   props: {
-    show: Boolean,
+    show: Boolean
   },
   data() {
     return {
       activetab: 1,
       loginData: {
         phone: "",
-        password: "",
+        password: ""
       },
       registerData: {
         name: "",
         family: "",
         phone: "",
         password: "",
-        password_confirm: "",
+        password_confirm: ""
       },
       loading: false,
       phoneInvalid: false,
       shortPassword: false,
       userRegisterUrl: "/auth/register",
       doctorRegisterUrl: "/auth/doctorO/register",
-      isDoctor: false,
+      isDoctor: false
     };
   },
   methods: {
@@ -250,29 +252,29 @@ export default {
         name: this.registerData.name,
         family: this.registerData.family,
         phone: this.toEnglishDigits(this.registerData.phone),
-        password: this.toEnglishDigits(this.registerData.password),
+        password: this.toEnglishDigits(this.registerData.password)
       };
       axios
         .post(
           this.isDoctor ? this.doctorRegisterUrl : this.userRegisterUrl,
           formData
         )
-        .then((res) => {
+        .then(res => {
           this.loading = false;
           Noty({
             message: res.data.message,
-            type: "success",
+            type: "success"
           });
         })
-        .catch(async (err) => {
+        .catch(async err => {
           this.loading = false;
           let errors;
           if (err.response) {
             errors = await err.response.data;
-            Object.entries(errors).map((e) => {
+            Object.entries(errors).map(e => {
               Noty({
                 message: e[1][0],
-                type: "info",
+                type: "info"
               });
             });
           }
@@ -286,7 +288,7 @@ export default {
       let loginData = {
         phone: this.toEnglishDigits(this.loginData.phone),
         password: this.toEnglishDigits(this.loginData.password)
-      }
+      };
       this.$store.commit("activeLoading");
       this.$store.dispatch("login", loginData);
 
@@ -299,7 +301,7 @@ export default {
         return t.charCodeAt(0) - e;
       });
       return str;
-    },
+    }
   },
   computed: {
     loginLoading() {
@@ -307,7 +309,7 @@ export default {
     },
     authenticated() {
       return this.$store.getters.authenticated;
-    },
+    }
   },
   watch: {
     authenticated(val) {
@@ -315,12 +317,12 @@ export default {
         this.$bvModal.hide("modal-lg");
       }
       console.log(val);
-    },
+    }
   },
   validations: {
     loginData: {
       phone: { required },
-      password: { required },
+      password: { required }
     },
     registerData: {
       name: { required },
@@ -329,13 +331,13 @@ export default {
 
       password: {
         required,
-        minLength: minLength(8),
+        minLength: minLength(8)
       },
       password_confirm: {
         required,
-        password_confirm: sameAs("password"),
-      },
-    },
-  },
+        password_confirm: sameAs("password")
+      }
+    }
+  }
 };
 </script>

@@ -9,7 +9,7 @@ const routes = [
   {
     path: "/",
     name: "Home",
-    component: Home,
+    component: Home
   },
   {
     path: "/panel",
@@ -22,26 +22,25 @@ const routes = [
           // token expired
           localStorage.removeItem("token");
           next("/");
-        }
-        else next();
+        } else next();
       } else {
         next("/");
       }
     },
-    children:[
+    children: [
       {
         path: "profile",
         name: "completeProfile",
-        component: () => import('../views/panel/Profile')
+        component: () => import("../views/panel/Profile")
       }
     ]
-  },
+  }
 ];
 
 const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
-  routes,
+  routes
 });
 
 export default router;

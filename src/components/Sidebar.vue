@@ -1,10 +1,15 @@
 <template>
   <div>
-    
     <ul>
-      <li @click.self="toggle" >{{ item.name }}[{{ isOpen ? '-' : '+' }}]</li>
+      <li @click.self="toggle">{{ item.name }}[{{ isOpen ? "-" : "+" }}]</li>
       <div v-if="isOpen">
-        <router-link :to="child.path" v-for="(child, index) in item.children" :key="index" tag="li">{{child.name}}</router-link>
+        <router-link
+          :to="child.path"
+          v-for="(child, index) in item.children"
+          :key="index"
+          tag="li"
+          >{{ child.name }}</router-link
+        >
       </div>
     </ul>
     <!-- <ul>
@@ -29,31 +34,29 @@
   </div>
 </template>
 <script>
-export default{
-  
+export default {
   props: {
-      item: Object
-    },
-    created(){
-      console.log(this.item);
-    },
-    data: function() {
-      return {
-        isOpen: false
-      };
-    },
-    computed: {
-      // isFolder: function() {
-      //   return this.item.children && this.item.children.length;
+    item: Object
+  },
+  created() {
+    console.log(this.item);
+  },
+  data: function() {
+    return {
+      isOpen: false
+    };
+  },
+  computed: {
+    // isFolder: function() {
+    //   return this.item.children && this.item.children.length;
+    // }
+  },
+  methods: {
+    toggle: function() {
+      // if (this.isFolder) {
+      this.isOpen = !this.isOpen;
       // }
-    },
-    methods: {
-      toggle: function() {
-        // if (this.isFolder) {
-          this.isOpen = !this.isOpen;
-        // }
-      },
     }
-}
+  }
+};
 </script>
-
