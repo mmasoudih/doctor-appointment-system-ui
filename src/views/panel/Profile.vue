@@ -1,46 +1,48 @@
 <template>
   <div>
-    <b-col cols="7" class="mx-auto">
+    <b-col cols="7" class="mx-auto" v-if="dataReady">
       <b-row>
         <b-col cols="3" sm="3" class="mt-3 mb-2 mx-auto">
           <b-avatar
             :src="
-              profileData.user.avatar == null
-                ? profileData.user.user.profile_photo_url
-                : profileData.user.avatar
+              userInfo.user.profile.avatar == null
+                ? userInfo.user.user.profile_photo_url
+                : 'http://127.0.0.1:8000/storage/' +
+                  userInfo.user.profile.avatar
             "
             size="6rem"
           ></b-avatar>
         </b-col>
       </b-row>
-      <b-form @submit="onSubmit" @reset="onReset" v-if="show">
-        <b-form-group id="input-group-1" label="نام :" label-for="input-1">
+      <b-form @submit="onSubmit" v-if="show">
+        <!-- <pre
+          >{{ userInfo }}
+        
+          </pre
+        > -->
+        <b-form-group label="نام :">
           <b-form-input
-            id="input-1"
-            v-model="form.email"
-            type="email"
+            :value="userInfo.user.user.name"
+            type="text"
             required
             placeholder="نام"
+            :disabled="true"
           ></b-form-input>
         </b-form-group>
 
-        <b-form-group
-          id="input-group-2"
-          label="نام خانوادگی :‌"
-          label-for="input-2"
-        >
+        <b-form-group label="نام خانوادگی :‌">
           <b-form-input
-            id="input-2"
-            v-model="form.name"
+            type="text"
+            :value="userInfo.user.user.family"
             required
             placeholder="نام خانوادگی"
+            :disabled="true"
           ></b-form-input>
         </b-form-group>
 
-        <b-form-group id="input-group-2" label="سن :‌" label-for="input-2">
+        <b-form-group label="سن :‌">
           <b-form-input
-            id="input-2"
-            v-model="form.name"
+            v-model="form.age"
             required
             placeholder="سن"
             type="number"
@@ -49,68 +51,81 @@
           ></b-form-input>
         </b-form-group>
 
-        <b-form-group
-          id="input-group-2"
-          label="معرفی کوتاه :‌"
-          label-for="input-2"
-        >
-          <b-textarea
-            id="input-2"
-            v-model="form.name"
-            required
-            placeholder="معرفی کوتاه"
-          >
+        <b-form-group label="معرفی کوتاه :‌">
+          <b-textarea v-model="form.bio" required placeholder="معرفی کوتاه">
+           
           </b-textarea>
+        </b-form-group>
+
+        <b-form-group label="عکس پروفایل :‌">
+          <!-- Styled -->
+          <b-form-file v-model="form.avatar" class="mt-3" plain></b-form-file>
+          <div class="mt-3">
+            فایل انتخاب شده: {{ form.avatar ? form.avatar.name : "" }}
+          </div>
         </b-form-group>
 
         <b-button type="submit" variant="primary" block>بروزرسانی</b-button>
       </b-form>
     </b-col>
+    <!-- {{ userInfo.user.user.id ? 121212  : ''}} -->
   </div>
 </template>
 <script>
+// import { mapGetters} from 'vuex';
+import axios from "../../axios";
 export default {
   data() {
     return {
       form: {
-        email: "",
-        name: "",
-        food: null,
-        checked: []
+        age: "",
+        bio: "",
+        avatar: null,
       },
-      foods: [
-        { text: "Select One", value: null },
-        "Carrots",
-        "Beans",
-        "Tomatoes",
-        "Corn"
-      ],
-      show: true
+      show: true,
+      dataReady: false,
     };
   },
   methods: {
     onSubmit(evt) {
       evt.preventDefault();
-      alert(JSON.stringify(this.form));
+      const formData = new FormData();
+      formData.append("avatar", this.form.avatar);
+      formData.append("age", this.form.age);
+      formData.append("bio", this.form.bio);
+      axios.post("/doctor/profile", formData);
     },
-    onReset(evt) {
-      evt.preventDefault();
-      // Reset our form values
-      this.form.email = "";
-      this.form.name = "";
-      this.form.food = null;
-      this.form.checked = [];
-      // Trick to reset/clear native browser form validation state
-      this.show = false;
-      this.$nextTick(() => {
-        this.show = true;
-      });
-    }
+  },
+  mounted() {
+    let test = this.$store.dispatch("setUserLogin");
+    test.then(() => {
+      this.dataReady = true;
+      if (this.userInfo.user.profile.age != null) {
+        this.form.age = this.userInfo.user.profile.age;
+      }
+      if (this.userInfo.user.profile.bio != null) {
+        this.form.bio = this.userInfo.user.profile.bio;
+      }
+    });
   },
   computed: {
-    profileData() {
+    userInfo() {
       return this.$store.getters.userInfo;
-    }
-  }
+    },
+  },
+  // mounted(){
+  //   this.sho();
+  // },
+  // computed: {
+  //   ...mapGetters(['userInfo'])
+
+  // },
+  // watch: {
+  // userInfo(result) {
+  //   // save Promise result in local state
+  //   this.compiledResult = result;
+  //   this.dataReady = true
+  // }
+  // }
 };
 </script>

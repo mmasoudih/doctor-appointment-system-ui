@@ -1,13 +1,26 @@
 <template>
   <div>
-    <ul>
-      <li @click.self="toggle">{{ item.name }}[{{ isOpen ? "-" : "+" }}]</li>
+    <ul class="m-0">
+      <div v-if="item.path">
+<router-link
+          @click.self="toggle"
+          :to="item.path ? item.path : ''"
+          tag="a"
+          :class="{'text-white-50': !isOpen ,'text-white': isOpen ,  }" class="nav nav-link nav-item bg-dark p-3 m-0"
+          >{{ item.name }}</router-link>
+      </div>
+      <div v-else>
+      <a @click="toggle" :class="{'text-white-50': !isOpen ,'text-white': isOpen ,  }" class="nav nav-link nav-item bg-dark p-3 m-0">{{item.name}}</a>
+
+      </div>
+
       <div v-if="isOpen">
         <router-link
           :to="child.path"
           v-for="(child, index) in item.children"
           :key="index"
-          tag="li"
+          tag="a"
+          class="nav nav-link text-white p-2 bg-success"
           >{{ child.name }}</router-link
         >
       </div>
@@ -60,3 +73,8 @@ export default {
   }
 };
 </script>
+<style scoped>
+.hover:hover{
+  background: #696969 !important
+}
+</style>

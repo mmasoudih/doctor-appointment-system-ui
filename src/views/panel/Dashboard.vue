@@ -10,15 +10,17 @@
           <b-col cols="12" class="mt-3 mb-2 mx-auto text-center">
             <b-avatar
               :src="
-                userInfo.user.avatar == null
+                userInfo.user.profile.avatar == null
                   ? userInfo.user.user.profile_photo_url
-                  : userInfo.user.avatar
+                  : 'http://127.0.0.1:8000/storage/'+userInfo.user.profile.avatar
               "
               size="6rem"
+              v-if="contentReady"
             ></b-avatar>
-            <p class="p-4 text-dark text-center font-weight-light h4">
+            <p class="p-4 text-dark text-center font-weight-light h4" v-if="contentReady">
               {{ userInfo.user.user.name }} {{ userInfo.user.user.family }}
             </p>
+            <!-- {{userInfo.user.user.name}} -->
           </b-col>
           <side-bar
             :item="parent"
@@ -41,13 +43,11 @@ export default {
   },
   data() {
     return {
+      contentReady: false,
       sideBarItem: [
         {
-          name: "بیمار",
-          children: [
-            { name: "لیست بیماران", path: "/test" },
-            { name: "بیمارهای جدید", path: "/test" }
-          ]
+          name: "ویریاش پروفایل",
+          path:'panel/profile'
         },
         {
           name: "دکتر",
@@ -59,8 +59,12 @@ export default {
       ]
     };
   },
-  mounted() {
-    this.$store.dispatch("setUserLogin");
+ mounted() {
+   let test = this.$store.dispatch("setUserLogin")
+   test.then(()=>{
+
+     this.contentReady = true
+   })
   },
   computed: {
     userInfo() {

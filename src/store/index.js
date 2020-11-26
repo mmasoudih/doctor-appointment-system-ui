@@ -83,12 +83,14 @@ export default new Vuex.Store({
     logout({ commit }) {
       commit("logout");
     },
-    setUserLogin({ commit }) {
-      axios
+    async setUserLogin({ commit }) {
+      await axios
         .get("/getUser")
         .then(async res => {
           let response = await res.data;
           commit("setUserLogin", response);
+          console.log('Value Set .......//////')
+          // return Promise.resolve();
         })
         .catch(async err => {
           this.loading = false;

@@ -236,7 +236,7 @@ export default {
       phoneInvalid: false,
       shortPassword: false,
       userRegisterUrl: "/auth/register",
-      doctorRegisterUrl: "/auth/doctorO/register",
+      doctorRegisterUrl: "/auth/doctor/register",
       isDoctor: false
     };
   },
