@@ -26,13 +26,15 @@
             :item="parent"
             v-for="(parent, index) in sideBarItem"
             :key="index"
+            
           ></side-bar>
         </b-col>
         <b-col cols="9" class="height-100">
           <router-view></router-view>
         </b-col>
       </b-row>
-    </b-container>
+      
+      </b-container>
   </div>
 </template>
 <script>
@@ -44,17 +46,22 @@ export default {
   data() {
     return {
       contentReady: false,
+      is_doctor: false,
       sideBarItem: [
         {
-          name: "ویریاش پروفایل",
-          path:'panel/profile'
+          name: "ویرایش پروفایل",
+          path:{name: "completeProfile"},
+          icon: "b-icon-person-bounding-box"
         },
         {
-          name: "دکتر",
-          children: [
-            { name: "لیست دکتر ها", path: "/test" },
-            { name: "دکتر های جدید", path: "/test" }
-          ]
+          name: "مدیریت روز های فعالیت",
+          path: {name: "manageDays"},
+          icon: "calendar2-check"
+        },
+        {
+          name: "مدیریت تخصص ها",
+          path: {name: "manageSpecialties"},
+          icon: "receipt"
         }
       ]
     };
@@ -63,7 +70,8 @@ export default {
    let test = this.$store.dispatch("setUserLogin")
    test.then(()=>{
 
-     this.contentReady = true
+     this.contentReady = true;
+     this.is_doctor = this.userInfo.is_doctor
    })
   },
   computed: {

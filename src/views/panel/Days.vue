@@ -1,0 +1,125 @@
+<template>
+  <div>
+    <b-col class="mx-auto">
+      <b-row>
+        <b-col cols="12">
+          <b-card class="mx-auto mt-3">
+            <b-card-header>
+              <b-card-text>روز های فعالیت خود را انتخاب کنید</b-card-text>
+            </b-card-header>
+            <b-card-body v-for="(day, index) in days" :key="day.id">
+              <b-row>
+                <b-col>
+                  <b-form-checkbox
+                    v-model="days[index].checked"
+                    name="check-button"
+                    button
+                    class="checkbox btn-block mt-4 pt-1"
+                    :button-variant="days[index].checked ? 'success' : 'warning'"
+                  >                  
+                    {{ day.week_day }}
+                    <template v-if="days[index].checked">
+                      <b-icon-check-square-fill></b-icon-check-square-fill>
+                    </template>
+                    <template v-else>
+                      <b-icon-check-square></b-icon-check-square>
+                    </template>
+                  </b-form-checkbox>
+                </b-col>
+                <b-col>
+                  <h6 class="text-center font-weight-light">ساعت شروع</h6>
+                  <b-form-timepicker
+                    v-bind="labels['fa-IR']"
+                    :locale="locale"
+                    label-close-button="بستن"
+                    v-model="days[index].startTime"
+                  >
+                  </b-form-timepicker>
+                </b-col>
+                <b-col>
+                  <h6 class="text-center font-weight-light">ساعت پایان</h6>
+                  <b-form-timepicker
+                    v-bind="labels['fa-IR']"
+                    :locale="locale"
+                    label-close-button="بستن"
+                    v-model="days[index].endTime"
+                  >
+                  </b-form-timepicker>
+                </b-col>
+              </b-row>
+              <br />
+            </b-card-body>
+            <b-button
+              @click="saveDay"
+              squared
+              class="btn-block mt-5"
+              variant="outline-success"
+              >ثبت تغییرات</b-button
+            >
+          </b-card>
+        </b-col>
+
+        <!-- <pre>
+
+{{days}}
+</pre> -->
+      </b-row>
+    </b-col>
+  </div>
+</template>
+<script>
+// import Noty from "../../plugins/notification";
+import axios from "../../axios";
+export default {
+  data() {
+    return {
+      days: [],
+      currentDays: [],
+      locale: "fa-IR",
+      labels: {
+        "fa-IR": {
+          labelNoTimeSelected: "ساعتی انتخاب نشده",
+        },
+      },
+    };
+  },
+  created() {
+    axios.get("/doctor/days").then(async (res) => {
+      this.days = await res.data;
+    });
+    axios.get("/doctor/day").then(async (res) => {
+      this.currentDays = await res.data;
+      // console.log(this.currentDays[0]);
+      
+    });
+    
+  },
+  methods: {
+    saveDay() {
+      let availableDays = [];
+      this.days.filter((e) => {
+        if (e.status && e.startTime && e.endTime) {
+          availableDays.push({
+            id: e.id,
+            start_time: e.startTime,
+            end_time: e.endTime,
+          });
+        }
+      });
+      axios.post("/doctor/day", availableDays);
+      console.log(availableDays);
+    },
+  },
+  computed: {
+    currentDay(){
+      return this.currentDays.map((e) => e.week_day_id);
+    }
+  },
+};
+</script>
+<style>
+label.btn.btn-warning,
+label.btn.btn-success {
+  width: 100%;
+}
+</style>

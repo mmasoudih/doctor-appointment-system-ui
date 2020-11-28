@@ -74,6 +74,7 @@
 <script>
 // import { mapGetters} from 'vuex';
 import axios from "../../axios";
+import Noty from "../../plugins/notification";
 export default {
   data() {
     return {
@@ -93,7 +94,17 @@ export default {
       formData.append("avatar", this.form.avatar);
       formData.append("age", this.form.age);
       formData.append("bio", this.form.bio);
-      axios.post("/doctor/profile", formData);
+      axios.post("/doctor/profile", formData).then(()=>{
+         Noty({
+            message: "پروفایل با موفقیت بروزرسانی شد",
+            type: "success"
+          });
+      }).catch(()=>{
+        Noty({
+            message: "اوه مشکلی پیش‌امده",
+            type: "error"
+          });
+      });
     },
   },
   mounted() {

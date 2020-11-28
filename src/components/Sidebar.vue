@@ -2,16 +2,26 @@
   <div>
     <ul class="m-0">
       <div v-if="item.path">
-<router-link
+        <router-link
           @click.self="toggle"
           :to="item.path ? item.path : ''"
           tag="a"
-          :class="{'text-white-50': !isOpen ,'text-white': isOpen ,  }" class="nav nav-link nav-item bg-dark p-3 m-0"
-          >{{ item.name }}</router-link>
+          :class="{ 'text-white-50': !isOpen, 'text-white': isOpen }"
+          class="nav nav-link nav-item bg-dark p-3 m-0"
+          >
+          
+          <b-icon :icon="item.icon"></b-icon>
+          {{ item.name }}
+          </router-link
+        >
       </div>
       <div v-else>
-      <a @click="toggle" :class="{'text-white-50': !isOpen ,'text-white': isOpen ,  }" class="nav nav-link nav-item bg-dark p-3 m-0">{{item.name}}</a>
-
+        <a
+          @click="toggle"
+          :class="{ 'text-white-50': !isOpen, 'text-white': isOpen }"
+          class="nav nav-link nav-item bg-dark p-3 m-0"
+          >{{ item.name }}</a
+        >
       </div>
 
       <div v-if="isOpen">
@@ -49,14 +59,14 @@
 <script>
 export default {
   props: {
-    item: Object
+    item: Object,
   },
   created() {
     console.log(this.item);
   },
   data: function() {
     return {
-      isOpen: false
+      isOpen: false,
     };
   },
   computed: {
@@ -69,12 +79,12 @@ export default {
       // if (this.isFolder) {
       this.isOpen = !this.isOpen;
       // }
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped>
-.hover:hover{
-  background: #696969 !important
+.hover:hover {
+  background: #696969 !important;
 }
 </style>

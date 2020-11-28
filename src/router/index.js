@@ -32,7 +32,18 @@ const routes = [
         path: "profile",
         name: "completeProfile",
         component: () => import("../views/panel/Profile")
+      },
+      {
+        path: "days",
+        name: "manageDays",
+        component: () => import("../views/panel/Days")
+      },
+      {
+        path: "specialties",
+        name: "manageSpecialties",
+        component: () => import("../views/panel/Specialy")
       }
+
     ]
   }
 ];
