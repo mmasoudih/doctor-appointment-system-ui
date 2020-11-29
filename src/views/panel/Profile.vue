@@ -53,7 +53,6 @@
 
         <b-form-group label="معرفی کوتاه :‌">
           <b-textarea v-model="form.bio" required placeholder="معرفی کوتاه">
-           
           </b-textarea>
         </b-form-group>
 
@@ -81,10 +80,10 @@ export default {
       form: {
         age: "",
         bio: "",
-        avatar: null,
+        avatar: null
       },
       show: true,
-      dataReady: false,
+      dataReady: false
     };
   },
   methods: {
@@ -94,18 +93,21 @@ export default {
       formData.append("avatar", this.form.avatar);
       formData.append("age", this.form.age);
       formData.append("bio", this.form.bio);
-      axios.post("/doctor/profile", formData).then(()=>{
-         Noty({
+      axios
+        .post("/doctor/profile", formData)
+        .then(() => {
+          Noty({
             message: "پروفایل با موفقیت بروزرسانی شد",
             type: "success"
           });
-      }).catch(()=>{
-        Noty({
+        })
+        .catch(() => {
+          Noty({
             message: "اوه مشکلی پیش‌امده",
             type: "error"
           });
-      });
-    },
+        });
+    }
   },
   mounted() {
     let test = this.$store.dispatch("setUserLogin");
@@ -122,8 +124,8 @@ export default {
   computed: {
     userInfo() {
       return this.$store.getters.userInfo;
-    },
-  },
+    }
+  }
   // mounted(){
   //   this.sho();
   // },

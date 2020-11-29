@@ -43,7 +43,6 @@ const routes = [
         name: "manageSpecialties",
         component: () => import("../views/panel/Specialy")
       }
-
     ]
   }
 ];

@@ -12,12 +12,16 @@
               :src="
                 userInfo.user.profile.avatar == null
                   ? userInfo.user.user.profile_photo_url
-                  : 'http://127.0.0.1:8000/storage/'+userInfo.user.profile.avatar
+                  : 'http://127.0.0.1:8000/storage/' +
+                    userInfo.user.profile.avatar
               "
               size="6rem"
               v-if="contentReady"
             ></b-avatar>
-            <p class="p-4 text-dark text-center font-weight-light h4" v-if="contentReady">
+            <p
+              class="p-4 text-dark text-center font-weight-light h4"
+              v-if="contentReady"
+            >
               {{ userInfo.user.user.name }} {{ userInfo.user.user.family }}
             </p>
             <!-- {{userInfo.user.user.name}} -->
@@ -26,15 +30,13 @@
             :item="parent"
             v-for="(parent, index) in sideBarItem"
             :key="index"
-            
           ></side-bar>
         </b-col>
         <b-col cols="9" class="height-100">
           <router-view></router-view>
         </b-col>
       </b-row>
-      
-      </b-container>
+    </b-container>
   </div>
 </template>
 <script>
@@ -50,29 +52,28 @@ export default {
       sideBarItem: [
         {
           name: "ویرایش پروفایل",
-          path:{name: "completeProfile"},
+          path: { name: "completeProfile" },
           icon: "b-icon-person-bounding-box"
         },
         {
           name: "مدیریت روز های فعالیت",
-          path: {name: "manageDays"},
+          path: { name: "manageDays" },
           icon: "calendar2-check"
         },
         {
           name: "مدیریت تخصص ها",
-          path: {name: "manageSpecialties"},
+          path: { name: "manageSpecialties" },
           icon: "receipt"
         }
       ]
     };
   },
- mounted() {
-   let test = this.$store.dispatch("setUserLogin")
-   test.then(()=>{
-
-     this.contentReady = true;
-     this.is_doctor = this.userInfo.is_doctor
-   })
+  mounted() {
+    let test = this.$store.dispatch("setUserLogin");
+    test.then(() => {
+      this.contentReady = true;
+      this.is_doctor = this.userInfo.is_doctor;
+    });
   },
   computed: {
     userInfo() {

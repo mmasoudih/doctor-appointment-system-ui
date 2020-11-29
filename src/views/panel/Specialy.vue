@@ -1,6 +1,5 @@
 <template>
   <div>
-    
     <b-form-tags
       tag-pills
       tag-variant="success"
@@ -10,7 +9,6 @@
       remove-on-delete
       class="mt-5"
     ></b-form-tags>
-
   </div>
 </template>
 <script>

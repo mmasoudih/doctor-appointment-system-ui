@@ -11,14 +11,19 @@
               <b-row>
                 <b-col>
                   <b-form-checkbox
-                    v-model="days[index].checked"
+                    v-model="selected"
                     name="check-button"
                     button
+                    :value="day.id"
                     class="checkbox btn-block mt-4 pt-1"
-                    :button-variant="days[index].checked ? 'success' : 'warning'"
-                  >                  
+                    :button-variant="
+                      selected.find(e => e == days[index].id)
+                        ? 'success'
+                        : 'warning'
+                    "
+                  >
                     {{ day.week_day }}
-                    <template v-if="days[index].checked">
+                    <template v-if="selected.find(e => e == days[index].id)">
                       <b-icon-check-square-fill></b-icon-check-square-fill>
                     </template>
                     <template v-else>
@@ -75,46 +80,52 @@ export default {
     return {
       days: [],
       currentDays: [],
+      selected: [],
       locale: "fa-IR",
       labels: {
         "fa-IR": {
-          labelNoTimeSelected: "ساعتی انتخاب نشده",
-        },
-      },
+          labelNoTimeSelected: "ساعتی انتخاب نشده"
+        }
+      }
     };
   },
   created() {
-    axios.get("/doctor/days").then(async (res) => {
+    axios.get("/doctor/days").then(async res => {
       this.days = await res.data;
     });
-    axios.get("/doctor/day").then(async (res) => {
+    axios.get("/doctor/day").then(async res => {
       this.currentDays = await res.data;
-      // console.log(this.currentDays[0]);
-      
+      await this.setDays();
     });
-    
   },
+
   methods: {
     saveDay() {
       let availableDays = [];
-      this.days.filter((e) => {
-        if (e.status && e.startTime && e.endTime) {
+      this.days.filter(e => {
+        if (e.checked && e.startTime && e.endTime) {
           availableDays.push({
             id: e.id,
             start_time: e.startTime,
-            end_time: e.endTime,
+            end_time: e.endTime
           });
         }
       });
       axios.post("/doctor/day", availableDays);
       console.log(availableDays);
     },
-  },
-  computed: {
-    currentDay(){
-      return this.currentDays.map((e) => e.week_day_id);
+    setDays() {
+      this.currentDays.map((val, index) => {
+        this.selected.push(val.id);
+        this.days[index].id == val.id
+          ? (this.days[index].startTime = val.start_time)
+          : "";
+        this.days[index].id == val.id
+          ? (this.days[index].endTime = val.end_time)
+          : "";
+      });
     }
-  },
+  }
 };
 </script>
 <style>

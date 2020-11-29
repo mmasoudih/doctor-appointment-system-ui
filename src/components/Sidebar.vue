@@ -8,12 +8,10 @@
           tag="a"
           :class="{ 'text-white-50': !isOpen, 'text-white': isOpen }"
           class="nav nav-link nav-item bg-dark p-3 m-0"
-          >
-          
+        >
           <b-icon :icon="item.icon"></b-icon>
           {{ item.name }}
-          </router-link
-        >
+        </router-link>
       </div>
       <div v-else>
         <a
@@ -59,14 +57,14 @@
 <script>
 export default {
   props: {
-    item: Object,
+    item: Object
   },
   created() {
     console.log(this.item);
   },
   data: function() {
     return {
-      isOpen: false,
+      isOpen: false
     };
   },
   computed: {
@@ -79,8 +77,8 @@ export default {
       // if (this.isFolder) {
       this.isOpen = !this.isOpen;
       // }
-    },
-  },
+    }
+  }
 };
 </script>
 <style scoped>
