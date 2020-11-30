@@ -1,17 +1,20 @@
 <template>
   <div>
-    <b-col cols="7" class="mx-auto" v-if="dataReady">
+    <b-col cols="7" class="mx-auto">
       <b-row>
         <b-col cols="3" sm="3" class="mt-3 mb-2 mx-auto">
-          <b-avatar
-            :src="
-              userInfo.user.profile.avatar == null
-                ? userInfo.user.user.profile_photo_url
-                : 'http://127.0.0.1:8000/storage/' +
-                  userInfo.user.profile.avatar
-            "
-            size="6rem"
-          ></b-avatar>
+          <b-skeleton class="p-5" type="avatar" v-if="!dataReady"></b-skeleton>
+          <template v-if="dataReady">
+            <b-avatar
+              :src="
+                userInfo.user.profile.avatar == null
+                  ? userInfo.user.user.profile_photo_url
+                  : 'http://127.0.0.1:8000/storage/' +
+                    userInfo.user.profile.avatar
+              "
+              size="6rem"
+            ></b-avatar>
+          </template>
         </b-col>
       </b-row>
       <b-form @submit="onSubmit" v-if="show">
@@ -41,7 +44,9 @@
         </b-form-group>
 
         <b-form-group label="سن :‌">
+          <b-skeleton type="input" v-if="!dataReady"></b-skeleton>
           <b-form-input
+            v-if="dataReady"
             v-model="form.age"
             required
             placeholder="سن"
@@ -52,7 +57,13 @@
         </b-form-group>
 
         <b-form-group label="معرفی کوتاه :‌">
-          <b-textarea v-model="form.bio" required placeholder="معرفی کوتاه">
+          <b-skeleton type="input" class="p-5" v-if="!dataReady"></b-skeleton>
+          <b-textarea
+            v-if="dataReady"
+            v-model="form.bio"
+            required
+            placeholder="معرفی کوتاه"
+          >
           </b-textarea>
         </b-form-group>
 
@@ -80,10 +91,10 @@ export default {
       form: {
         age: "",
         bio: "",
-        avatar: null
+        avatar: null,
       },
       show: true,
-      dataReady: false
+      dataReady: false,
     };
   },
   methods: {
@@ -98,16 +109,16 @@ export default {
         .then(() => {
           Noty({
             message: "پروفایل با موفقیت بروزرسانی شد",
-            type: "success"
+            type: "success",
           });
         })
         .catch(() => {
           Noty({
             message: "اوه مشکلی پیش‌امده",
-            type: "error"
+            type: "error",
           });
         });
-    }
+    },
   },
   mounted() {
     let test = this.$store.dispatch("setUserLogin");
@@ -124,8 +135,8 @@ export default {
   computed: {
     userInfo() {
       return this.$store.getters.userInfo;
-    }
-  }
+    },
+  },
   // mounted(){
   //   this.sho();
   // },

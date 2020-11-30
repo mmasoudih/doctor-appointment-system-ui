@@ -8,22 +8,32 @@
           id="sidenav"
         >
           <b-col cols="12" class="mt-3 mb-2 mx-auto text-center">
-            <b-avatar
-              :src="
-                userInfo.user.profile.avatar == null
-                  ? userInfo.user.user.profile_photo_url
-                  : 'http://127.0.0.1:8000/storage/' +
-                    userInfo.user.profile.avatar
-              "
-              size="6rem"
-              v-if="contentReady"
-            ></b-avatar>
-            <p
+            <b-skeleton
+              class="p-5 mx-auto mt-2 mb-4"
+              type="avatar"
+              v-if="!contentReady"
+            ></b-skeleton>
+            <template v-if="contentReady">
+              <b-avatar
+                :src="
+                  userInfo.user.profile.avatar == null
+                    ? userInfo.user.user.profile_photo_url
+                    : 'http://127.0.0.1:8000/storage/' +
+                      userInfo.user.profile.avatar
+                "
+                size="6rem"
+              ></b-avatar>
+            </template>
+            <b-skeleton v-if="!contentReady"></b-skeleton>
+            <template v-if="contentReady">
+              
+              <p
               class="p-4 text-dark text-center font-weight-light h4"
-              v-if="contentReady"
+
             >
               {{ userInfo.user.user.name }} {{ userInfo.user.user.family }}
             </p>
+            </template>
             <!-- {{userInfo.user.user.name}} -->
           </b-col>
           <side-bar
@@ -43,7 +53,7 @@
 import SideBar from "../../components/Sidebar";
 export default {
   components: {
-    SideBar
+    SideBar,
   },
   data() {
     return {
@@ -53,19 +63,19 @@ export default {
         {
           name: "ویرایش پروفایل",
           path: { name: "completeProfile" },
-          icon: "b-icon-person-bounding-box"
+          icon: "b-icon-person-bounding-box",
         },
         {
           name: "مدیریت روز های فعالیت",
           path: { name: "manageDays" },
-          icon: "calendar2-check"
+          icon: "calendar2-check",
         },
         {
           name: "مدیریت تخصص ها",
           path: { name: "manageSpecialties" },
-          icon: "receipt"
-        }
-      ]
+          icon: "receipt",
+        },
+      ],
     };
   },
   mounted() {
@@ -78,8 +88,8 @@ export default {
   computed: {
     userInfo() {
       return this.$store.getters.userInfo;
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped>
