@@ -316,7 +316,7 @@ export default {
       if (val) {
         this.$bvModal.hide("modal-lg");
       }
-      console.log(val);
+      // console.log(val);
     }
   },
   validations: {

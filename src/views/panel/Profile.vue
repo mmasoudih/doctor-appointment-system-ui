@@ -7,10 +7,10 @@
           <template v-if="dataReady">
             <b-avatar
               :src="
-                userInfo.user.profile.avatar == null
+                userInfo.user.user.profile.avatar == null
                   ? userInfo.user.user.profile_photo_url
                   : 'http://127.0.0.1:8000/storage/' +
-                    userInfo.user.profile.avatar
+                    userInfo.user.user.profile.avatar
               "
               size="6rem"
             ></b-avatar>

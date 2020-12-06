@@ -16,31 +16,47 @@
             <template v-if="contentReady">
               <b-avatar
                 :src="
-                  userInfo.user.profile.avatar == null
+                  userInfo.user.user.profile.avatar == null
                     ? userInfo.user.user.profile_photo_url
                     : 'http://127.0.0.1:8000/storage/' +
-                      userInfo.user.profile.avatar
+                      userInfo.user.user.profile.avatar
                 "
                 size="6rem"
               ></b-avatar>
             </template>
             <b-skeleton v-if="!contentReady"></b-skeleton>
             <template v-if="contentReady">
-              
-              <p
-              class="p-4 text-dark text-center font-weight-light h4"
-
-            >
-              {{ userInfo.user.user.name }} {{ userInfo.user.user.family }}
-            </p>
+              <p class="p-4 text-dark text-center font-weight-light h4">
+                {{ userInfo.user.user.name }} {{ userInfo.user.user.family }}
+              </p>
             </template>
             <!-- {{userInfo.user.user.name}} -->
           </b-col>
-          <side-bar
-            :item="parent"
-            v-for="(parent, index) in sideBarItem"
-            :key="index"
-          ></side-bar>
+          <template v-if="contentReady">
+            <div
+              v-if="userInfo.user.user.is_admin && userInfo.is_doctor == false"
+            >
+              <side-bar
+                :item="parent"
+                v-for="(parent, index) in adminMenu"
+                :key="index"
+              ></side-bar>
+            </div>
+            <div v-if="userInfo.is_doctor">
+              <side-bar
+                :item="parent"
+                v-for="(parent, index) in doctorMenu"
+                :key="index"
+              ></side-bar>
+            </div>
+            <div v-else>
+              <side-bar
+                :item="parent"
+                v-for="(parent, index) in userMenu"
+                :key="index"
+              ></side-bar>
+            </div>
+          </template>
         </b-col>
         <b-col cols="9" class="height-100">
           <router-view></router-view>
@@ -58,8 +74,7 @@ export default {
   data() {
     return {
       contentReady: false,
-      is_doctor: false,
-      sideBarItem: [
+      doctorMenu: [
         {
           name: "ویرایش پروفایل",
           path: { name: "completeProfile" },
@@ -76,13 +91,26 @@ export default {
           icon: "receipt",
         },
       ],
+      adminMenu: [
+        {
+          name: "لیست دکترها",
+          path: { name: "completeProfile" },
+          icon: "b-icon-person-bounding-box",
+        },
+      ],
+      userMenu: [
+        {
+          name: "لیست ",
+          path: { name: "completeProfile" },
+          icon: "b-icon-person-bounding-box",
+        },
+      ],
     };
   },
   mounted() {
     let test = this.$store.dispatch("setUserLogin");
     test.then(() => {
       this.contentReady = true;
-      this.is_doctor = this.userInfo.is_doctor;
     });
   },
   computed: {

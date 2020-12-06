@@ -89,7 +89,7 @@ export default new Vuex.Store({
         .then(async res => {
           let response = await res.data;
           commit("setUserLogin", response);
-          console.log("Value Set .......//////");
+          // console.log("Value Set .......//////");
           // return Promise.resolve();
         })
         .catch(async err => {
