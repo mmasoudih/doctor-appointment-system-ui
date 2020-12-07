@@ -32,6 +32,7 @@
             </template>
             <!-- {{userInfo.user.user.name}} -->
           </b-col>
+          
           <template v-if="contentReady">
             <div
               v-if="userInfo.user.user.is_admin && userInfo.is_doctor == false"
@@ -49,7 +50,7 @@
                 :key="index"
               ></side-bar>
             </div>
-            <div v-else>
+            <div v-if="!userInfo.user.user.is_admin &&  userInfo.is_doctor == false">
               <side-bar
                 :item="parent"
                 v-for="(parent, index) in userMenu"
@@ -94,8 +95,8 @@ export default {
       adminMenu: [
         {
           name: "لیست دکترها",
-          path: { name: "completeProfile" },
-          icon: "b-icon-person-bounding-box",
+          path: { name: "manageDoctors" },
+          icon: "b-icon-person",
         },
       ],
       userMenu: [

@@ -42,6 +42,11 @@ const routes = [
         path: "specialties",
         name: "manageSpecialties",
         component: () => import("../views/panel/Specialy")
+      },
+      {
+        path: "doctors",
+        name: "manageDoctors",
+        component: () => import("../views/panel/Doctors")
       }
     ]
   }
