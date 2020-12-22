@@ -47,7 +47,12 @@ const routes = [
         path: "doctors",
         name: "manageDoctors",
         component: () => import("../views/panel/Doctors")
-      }
+      },
+      {
+        path: "get-turn",
+        name: "getTurn",
+        component: () => import("../views/panel/Turn")
+      },
     ]
   }
 ];

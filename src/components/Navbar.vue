@@ -4,7 +4,9 @@
     <b-collapse id="nav-collapse" is-nav>
       <b-navbar-nav>
         <router-link to="/" tag="b-nav-item">صفحه اصلی</router-link>
-        <router-link to="/panel" tag="b-nav-item">ورود به پنل</router-link>
+        <div v-if="authenticated">
+          <router-link to="/panel" tag="b-nav-item">ورود به پنل</router-link>
+        </div>
       </b-navbar-nav>
 
       <!-- left aligned nav items -->
@@ -46,17 +48,17 @@ import LoginRegisterModal from "./SignUpIn";
 
 export default {
   components: {
-    LoginRegisterModal
+    LoginRegisterModal,
   },
   methods: {
     logout() {
       this.$store.dispatch("logout");
-    }
+    },
   },
   computed: {
     authenticated() {
       return this.$store.getters.authenticated;
-    }
-  }
+    },
+  },
 };
 </script>

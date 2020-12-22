@@ -1,7 +1,7 @@
 import axios from "axios";
 const api = axios.create({
-  baseURL: "http://127.0.0.1:8000/api",
-  timeout: 20000
+  baseURL: "http://mohamadmasoudi.ir/api",
+  timeout: 40000
   // headers:{
   //   'Authorization': `Bearer ${Store.getters.token}`
   // }

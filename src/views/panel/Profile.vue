@@ -9,7 +9,7 @@
               :src="
                 userInfo.user.user.profile.avatar == null
                   ? userInfo.user.user.profile_photo_url
-                  : 'http://127.0.0.1:8000/storage/' +
+                  : 'http://mohamadmasoudi.ir/storage/' +
                     userInfo.user.user.profile.avatar
               "
               size="6rem"

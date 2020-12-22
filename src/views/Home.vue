@@ -1,6 +1,16 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
+    <b-card
+      overlay
+      img-src="../../public/header.jpg"
+      img-height="700"
+      
+    >
+      <b-card-text class="bg-white ">
+        <h1 class="text-center display-3 p-5">نوبت دهی بیمارستان </h1>        
+        <p class="text-center p-5 ">جهت گرفتن نوبت وارد حساب کاربری خود شوید </p>        
+      </b-card-text>
+    </b-card>
   </div>
 </template>
 
@@ -13,6 +23,6 @@ export default {
   name: "Home",
   components: {
     // AppSlider
-  }
+  },
 };
 </script>

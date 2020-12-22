@@ -1,6 +1,7 @@
 <template>
   <div>
     <b-container fluid>
+      
       <b-row>
         <b-col
           cols="3"
@@ -18,7 +19,7 @@
                 :src="
                   userInfo.user.user.profile.avatar == null
                     ? userInfo.user.user.profile_photo_url
-                    : 'http://127.0.0.1:8000/storage/' +
+                    : 'http://mohamadmasoudi.ir/storage/' +
                       userInfo.user.user.profile.avatar
                 "
                 size="6rem"
@@ -30,7 +31,7 @@
                 {{ userInfo.user.user.name }} {{ userInfo.user.user.family }}
               </p>
             </template>
-            <!-- {{userInfo.user.user.name}} -->
+          
           </b-col>
           
           <template v-if="contentReady">
@@ -43,12 +44,15 @@
                 :key="index"
               ></side-bar>
             </div>
-            <div v-if="userInfo.is_doctor">
+            <div v-if="userInfo.is_doctor && userInfo.is_active == 1">
               <side-bar
                 :item="parent"
                 v-for="(parent, index) in doctorMenu"
                 :key="index"
               ></side-bar>
+            </div>
+            <div v-if="userInfo.is_doctor && userInfo.is_active == 0">
+              لطفا پروفایل خود را تکمیل کنید.
             </div>
             <div v-if="!userInfo.user.user.is_admin &&  userInfo.is_doctor == false">
               <side-bar
@@ -62,7 +66,9 @@
         <b-col cols="9" class="height-100">
           <router-view></router-view>
         </b-col>
+
       </b-row>
+      
     </b-container>
   </div>
 </template>
@@ -103,6 +109,11 @@ export default {
         {
           name: "لیست ",
           path: { name: "completeProfile" },
+          icon: "b-icon-person-bounding-box",
+        },
+        {
+          name: "گرفتن نوبت ",
+          path: { name: "getTurn" },
           icon: "b-icon-person-bounding-box",
         },
       ],
